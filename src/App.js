@@ -5,11 +5,12 @@ import { loginRequest, msalConfig } from "./authConfig";
 import { MsalProvider, AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, useAccount } from "@azure/msal-react";
 import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
 import Button from "react-bootstrap/Button";
-import { NavigationBar } from './components/DataDisplay';
 import "./styles/App.css";
 
 // Initialize MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
+
+
 
 // Component that handles API interaction
 const MainContent = () => {
@@ -32,16 +33,19 @@ const MainContent = () => {
       };
 
       const query = `
-        query {
-          factInternetSales {
-            items {
-              ProductKey
-              TotalProductCost
-              SalesOrderNumber
-            }
-          }
-        }
-      `;
+          query {
+              factInternetSales(
+                filter: {
+                  TotalProductCost: { gt: 1000 }
+                }
+              ) {
+                items {
+                  ProductKey
+                  TotalProductCost
+                  SalesOrderNumber
+                }
+              }
+          }`;
 
       const apiResponse = await fetch(endpoint, {
         method: 'POST',
@@ -81,10 +85,9 @@ const MainContent = () => {
 function App() {
   return (
     <MsalProvider instance={msalInstance}>
-      <NavigationBar />
-      <div className="container mt-5">
+      <PageLayout>
         <MainContent />
-      </div>
+      </PageLayout>
     </MsalProvider>
   );
 }
