@@ -5,7 +5,6 @@ import { loginRequest, msalConfig } from "./authConfig";
 import { MsalProvider, AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, useAccount } from "@azure/msal-react";
 import { PublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
 import Button from "react-bootstrap/Button";
-import { NavigationBar } from './components/DataDisplay';
 import "./styles/App.css";
 
 // Initialize MSAL instance
@@ -81,10 +80,9 @@ const MainContent = () => {
 function App() {
   return (
     <MsalProvider instance={msalInstance}>
-      <NavigationBar />
-      <div className="container mt-5">
+      <PageLayout>
         <MainContent />
-      </div>
+      </PageLayout>
     </MsalProvider>
   );
 }
